@@ -42,6 +42,10 @@ socket.on('joinedGame', data => {
   }
 })
 
+socket.on('timeout', txt => {
+  alert(txt)
+})
+
 socket.on('movePiece', (data) => {
   let katak;
   tiles.forEach(tile => {

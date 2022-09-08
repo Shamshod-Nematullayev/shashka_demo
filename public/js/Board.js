@@ -48,8 +48,9 @@
         })
         pieces.forEach(piece => {          
           if(continiuousjump && beforeMoves[1][0] == piece.position[0] && beforeMoves[1][1] == piece.position[1]){
-            if(!piece.element.className.includes("selected")){
-              piece.element.classList.add("selected")
+            console.log(piece);
+            if(!piece.element[0].className.includes("selected")){
+              piece.element[0].classList.add("selected")
             }
           }
         })

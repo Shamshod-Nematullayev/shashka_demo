@@ -1,107 +1,104 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>HTML5 Checkers</title>
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> -->
-  
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700"
-    />
-    <link rel="stylesheet" href="/css/checkers.css" />
-    <link href="/style.css" rel="stylesheet" />
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-    <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
-    <link rel="icon" href="favicon.ico" type="image/x-icon" />
-    <link rel="icon" href="favicon.png" type="image/x-icon" />
-    <script src="/socket.io/socket.io.js"></script>
-  </head>
-  <body>
-    <input type="hidden" name="gamed" value="<%= game_id %>" />
-    <input type="hidden" name="sessionID" value="<%= user_id %>" />
-    <pre>
-      <%= JSON.stringify(messages) %>
-    </pre>
-    <script>
-      
-      var game_id = document.querySelector("input[name=gamed]").value
-      var sessionID = document.querySelector("input[name=sessionID]").value
-      var baqay = <%= JSON.stringify(board) %>
-      var player_turn = Number(<%= player_turn%>)
-      let beforeMoves = <%= JSON.stringify(beforeMove)%>
-      let continiuousjump = <%=continiuousjump%>
-      var player1
-      var player2
-      let currentPlayer;
-      console.log(JSON.parse(document.querySelector("pre")))
-      let messages = <%=JSON.stringify(messages, null, 4)%>
-      </script>
-      
-    <%if(player_1){%>
-    <script>
-      player1 = "<%= player_1.user_id %>";
-      if (sessionID == player1) {
-        currentPlayer = 1;
-      }
-    </script>
-    <% } if(player_2){%>
-    <script>
-      player2 = `<%= player_2.user_id %>`;
-      if (sessionID == player2) {
-        currentPlayer = 2;
-      }
-    </script>
-    <% } %>
+<html lang="en">
 
-    <!-- Qaysi rangda o'ynashni tanlash -->
-    <div class="modal-choose"></div>
-    <script>
-      if (!player1 || !player2) {
-        let modal = document.querySelector(".modal-choose");
-        modal.style.display = "flex";
-        if (!player2)
-          modal.innerHTML += `<button onclick="chosed('white')" id="w">white</button>`;
-        if (!player1)
-          modal.innerHTML += `<button onclick="chosed('red')" id="r">red</button>`;
-      }
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="/style.css" rel="stylesheet" />
+  <script src="/socket.io/socket.io.js"></script>
+  <title>Shashka Demo</title>
+</head>
+
+<body>
+  <input type="hidden" name="gamed" value="<%= game_id %>" />
+  <input type="hidden" name="sessionID" value="<%= user_id %>" />
+  <script>
+      
+    var game_id = document.querySelector("input[name=gamed]").value
+    var sessionID = document.querySelector("input[name=sessionID]").value
+    var baqay = <%= JSON.stringify(board) %>
+    var player_turn = Number(<%= player_turn%>)
+    let beforeMoves = <%= JSON.stringify(beforeMove)%>
+    let continiuousjump = <%=continiuousjump%>
+    var player1
+    var player2
+    let currentPlayer;
+    let currentUsername = "<%= username%>"
     </script>
-    <div class="columns">
-      <nav class="menu-panel">
-        <div class="menu-head">
-          <div
-            class="menu-avatar"
-            style="
-              background-image: url('https://gamefactory.zone/file/user_photo/u8kMClM87EUaq5E9BGVFKA/photos/file_1378587.jpg');
-            "
-          ></div>
-          <button class="menu-logout" style="display: none">
-            <i class="fa fa-sign-out"></i>
-          </button>
-          <div class="menu-username">HAQIQAT IZLAB</div>
+
+<%if(player_1){%>
+  <script>
+    player1 = "<%= player_1.user_id %>";
+    if (sessionID == player1) {
+      currentPlayer = 1;
+    }
+  </script>
+  <% } if(player_2){%>
+  <script>
+    player2 = `<%= player_2.user_id %>`;
+    if (sessionID == player2) {
+      currentPlayer = 2;
+    }
+  </script>
+  <% } %>
+  <!-- Qaysi rangda o'ynashni tanlash -->
+  <div class="modal-choose"></div>
+  <script>
+    if (!player1 || !player2) {
+      let modal = document.querySelector(".modal-choose");
+      modal.style.display = "flex";
+      if (!player2)
+        modal.innerHTML += `<button onclick="chosed('white')" id="w">white</button>`;
+      if (!player1)
+        modal.innerHTML += `<button onclick="chosed('red')" id="r">red</button>`;
+    }
+  </script>
+  <div class="container">
+    <div class="site-bar bar">
+      <i class="fa-solid fa-xmark" id="one_mark"></i>
+      <div class="menu-head">
+        <img src="/image/<%=user_id%>.jpg" class="profile_image" alt="profile_image">
+        <div class="profile_name"></div>
+        <script>
+          function format(text){
+           text = text.split("")
+           let newText = ''
+           text.forEach((s, i) => {
+            s === "-" ? newText += " " : newText += s
+
+           })
+           return newText
+          }
+          document.querySelector('.menu-head .profile_name').textContent = format(currentUsername)
+        </script>
+      </div>
+      <div class="menu">
+        <div class="item">
+          <i class="fa-solid fa-user-group"></i>
+          <p class="menu-name">Chess Lobby</p>
         </div>
-        <div class="menu-item menu-lobby">
-          <i class="fa fa-users"></i>
-          <div class="text">Checkers Lobby</div>
+        <div class="item">
+          <i class="fa-solid fa-bars-progress"></i>
+          <p class="menu-name">My Games</p>
         </div>
-        <div class="menu-item menu-myGames">
-          <i class="fa fa-list-ul"></i>
-          <div class="text">My Games</div>
-          <div class="badge pending-games">0</div>
+        <div class="item active">
+          <i class="fa-solid fa-play"></i>
+          <p class="menu-name">Current Game</p>
         </div>
-        <div class="menu-item menu-room selected">
-          <i class="fa fa-play"></i>
-          <div class="text">Current Game</div>
-          <div class="badge current-room">!</div>
-        </div>
-        <div class="logo">
-          <div class="logo-img"></div>
-          <span>GameFactory Chess</span>
-        </div>
-      </nav>
+      </div>
+      <div class="menu-bottom">
+        <i class="fa-solid fa-chess"></i>
+        <p class="company_name">Oliy Ong</p>
+      </div>
+    </div>
+
+    
+    <div class="content">
       <div class="column">
         <div id="board">
           <div class="tiles"></div>
@@ -111,62 +108,94 @@
           </div>
         </div>
       </div>
-      <div class="right-panel">
-        <div class="game-console stack-panel">
-          <div
-            class="game-console-container100 stack-tab hidden"
-            data-name="notation"
-          >
-            <div class="game-console-header">Notation</div>
-            
-          </div>
-          <div
-            class="game-console-container100 stack-tab chat selected"
-            data-name="chat"
-            style="
-              touch-action: pan-y;
-              user-select: none;
-              -webkit-user-drag: none;
-              -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-            "
-          >
-            <div
-              class="inner-area"
-              style="
-                touch-action: pan-y;
-                user-select: none;
-                -webkit-user-drag: none;
-                -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-              "
-            ></div>
-            <form>
-              <div class="chat-input">
-                <input type="text" /><button type="submit">
-                  <i class="fa fa-paper-plane" aria-hidden="true"></i
-                  ><span></span>
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-        <div class="toolbar right-toolbar">
-          <button
-            type="button"
-            class="btn right-panel-btn"
-            data-action="rightPanel"
-          >
-            <i class="fa fa-bars" aria-hidden="true"></i><span></span>
+
+      <div class="mobile_profile it">
+        <img src="/image/alisher.jpg" class="profile_image" alt="profile_image">
+        <div class="profile_name">Alisher Sadullayev</div>
+      </div>
+      <div class="mobile_profile you">
+        <img src="/image/shamshod.jpg" class="profile_image" alt="profile_image">
+        <div class="profile_name">Shamshod</div>
+      </div>
+      <div class="content-bottom">
+        <i class="fa-solid fa-bars one" id="one_bars"></i>
+        <div class="motion">
+          <button class="icon" id="resignBtn">
+            <i class="fa-regular fa-flag"></i>
+            <p>resign</p>
           </button>
-          <div class="gap gap-center"></div>
+          <button class="icon" id="drawBtn">
+            <i class="fa-solid fa-handshake-simple"></i>
+            <p>draw</p>
+          </button>
+          <button class="icon" id="cancelBtn">
+            <i class="fa-solid fa-ban"></i>
+            <p>canced</p>
+          </button>
         </div>
+        <i class="fa-solid fa-bars two" id="two_bars"></i>
+        <h1></h1>
       </div>
     </div>
-  </body>
-  <script src="/jQuery.js"></script>
-  <script src="/js/socket.js"></script>
-  <script src="/js/game.js"></script>
-  <script src="/js/Tile.js"></script>
-  <script src="/js/Board.js"></script>
-  <script src="/js/events.click.js"></script>
-  <script src="/js/chat.js"></script>
+
+
+
+
+    <div class="chat-bar bar">
+      <i class="fa-solid fa-xmark" id="two_mark"></i>
+      <div class="profile">
+        <img src="/image/alisher.jpg" class="profile_image" alt="profile_image">
+        <div class="profile_name">Alisher Sadullayev</div>
+      </div>
+      <p id="player_1_time">60</p>
+      <div class="chat">
+        <div class="chat-messages">
+          <% messages.forEach(ctx => { %>
+            <%if(ctx.from == user_id) {%>
+             <div class="chat-message me">
+            <% }else { %> 
+              <div class="chat-message">
+              <% } %> 
+              <div class="chat-photo" style="background-image: url('/img/profile-pic-300px.jpg');"></div>
+             <div class="chat-text" >
+             <div class="username"><%= ctx.from %></div><%= ctx.text %> </div>
+             </div>
+          <% }) %> 
+        </div>
+        <!-- <form action=""> -->
+        <form class="chat-input chat-form">
+            <input type="text" placeholder="Comment" class="chat_input">
+            <button class="fa-solid fa-paper-plane"></button>
+          </form>
+        <!-- </form> -->
+      </div>
+      <p id="player_2_time">60</p>
+      <div class="profile">
+        <img src="/image/unknown.png" class="profile_image player2_photo" alt="profile_image" >
+        <div class="profile_name player2_name" ></div>
+      </div>
+    </div>
+  </div>
+  <script src="/js/script.js"></script>
+</body>
+
+<script>
+  let images = document.querySelectorAll(".profile_image")
+  images.forEach(img => {
+    img.addEventListener('error', function handleError(err) {
+    img.src = "/image/unknown.png"
+    console.log(err);
+  })
+});
+</script>
+<script src="/jQuery.js"></script>
+<script src="/js/socket.js"></script>
+<script src="/js/game.js"></script>
+<script src="/js/Tile.js"></script>
+<script src="/js/Board.js"></script>
+<script src="/js/events.click.js"></script>
+<script src="/js/chat.js"></script>
+<script src="/js/timer.js"></script>
+<script src="/js/bottomPanel.js"></script>
+<script src="/js/playerPhoto.js"></script>
 </html>

@@ -1,1 +1,2 @@
+require("./catch")
 require('./sendgame')

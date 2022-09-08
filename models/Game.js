@@ -26,7 +26,8 @@ const schema = mongoose.Schema({
         type: Boolean,
         default: false
     },
-    inline_message_id: String
+    inline_message_id: String,
+    lose: Object
 })
 
 const Game = mongoose.model("game", schema);
