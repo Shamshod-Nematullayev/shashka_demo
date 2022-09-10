@@ -5,9 +5,10 @@
     //position in gameboard
     this.position = position;
     //if tile is in range from the piece
+    let log = console.log
     this.inRange = function (piece) {
       for (let k of pieces)
-        if (k.position[0] == this.position[0] && k.position[1] == this.position[1]) return 'wrong';
+        if (k.position[0] == this.position[0] && k.position[1] == this.position[1]) {log(44);return 'wrong'};
 
       let abbr = Math.floor(dist(this.position[0], this.position[1], piece.position[0], piece.position[1]))
       if ( abbr == floor(1)  && !piece.king) {

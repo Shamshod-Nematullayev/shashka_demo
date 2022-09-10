@@ -4,10 +4,10 @@ let socket = io()
 socket.emit('joinRoom', game_id)
 let player;
 let playerTeam
-
 // sounds
 let moveSound = new Audio("/sounds/move.ogg")
 let captureSound = new Audio("/sounds/capture.ogg")
+
 socket.on('joinedGame', data => {
   user_team = data.color
   player = data.user_id
@@ -47,6 +47,7 @@ socket.on('timeout', txt => {
 })
 
 socket.on('movePiece', (data) => {
+  console.log("yurish");
   let katak;
   tiles.forEach(tile => {
     if(tile.position[0] == data.tile.position[0] && tile.position[1] == data.tile.position[1]){
@@ -116,10 +117,5 @@ socket.on('movePiece', (data) => {
   
   
   function chosed(rang){
-  socket.emit('joinGame', {user_id:sessionID, color:rang})
-}
-if(currentPlayer == 1){
-  socket.emit('joinGame', {user_id:sessionID, color:'red'})
-}else if(currentPlayer == 2){
-  socket.emit('joinGame', {user_id:sessionID, color:'white' })
+  socket.emit('joinGame', {user_id:sessionID, color:rang, username: currentUsername})
 }

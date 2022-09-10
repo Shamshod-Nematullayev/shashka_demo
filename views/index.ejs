@@ -17,18 +17,19 @@
 <body>
   <input type="hidden" name="gamed" value="<%= game_id %>" />
   <input type="hidden" name="sessionID" value="<%= user_id %>" />
+  <input type="hidden" name="username" value="<%= (username)%>">
   <script>
       
     var game_id = document.querySelector("input[name=gamed]").value
     var sessionID = document.querySelector("input[name=sessionID]").value
-    var baqay = <%= JSON.stringify(board) %>
-    var player_turn = Number(<%= player_turn%>)
-    let beforeMoves = <%= JSON.stringify(beforeMove)%>
-    let continiuousjump = <%=continiuousjump%>
+    var baqay = <%= JSON.stringify(board) %>;
+    var player_turn = Number(<%= player_turn%>);
+    let beforeMoves = <%= JSON.stringify(beforeMove)%>;
+    let continiuousjump = <%=continiuousjump%>;
     var player1
     var player2
     let currentPlayer;
-    let currentUsername = "<%= username%>"
+    let currentUsername = document.querySelector("input[name=username]").value
     </script>
 
 <%if(player_1){%>
@@ -144,8 +145,8 @@
     <div class="chat-bar bar">
       <i class="fa-solid fa-xmark" id="two_mark"></i>
       <div class="profile">
-        <img src="/image/alisher.jpg" class="profile_image" alt="profile_image">
-        <div class="profile_name">Alisher Sadullayev</div>
+        <img src="/image/unknown.png" class="profile_image player1_photo" alt="profile_image">
+        <div class="profile_name player1_name"></div>
       </div>
       <p id="player_1_time">60</p>
       <div class="chat">
@@ -198,4 +199,7 @@
 <script src="/js/timer.js"></script>
 <script src="/js/bottomPanel.js"></script>
 <script src="/js/playerPhoto.js"></script>
+<script>
+  
+</script>
 </html>

@@ -43,8 +43,9 @@
       })
       //check if the tile is in range from the object
       var inRange = tile.inRange(piece);
+      console.log(inRange);
       if (inRange != 'wrong') {
-            socket.emit('move', {tile, piece, board: Board.board, turn: Board.playerTurn })
+            socket.emit('move', {tile: tile.position, piece: piece.position, board: Board.board, turn: Board.playerTurn })
           }
     }
   });
